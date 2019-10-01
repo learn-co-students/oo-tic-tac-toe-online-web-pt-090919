@@ -9,8 +9,7 @@ class TicTacToe
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
-    ]
+    [2, 4, 6] ]
   
   def initialize 
     @board = Array.new(9, " ")
@@ -42,25 +41,20 @@ class TicTacToe
   end 
   
   def valid_move?(position)
-    position < 9 && !position_taken?(position)
+    position >= 0 && position < 9 && !position_taken?(position)
   end 
   
   def turn
     puts "Choose a cell (1 - 9)"
-    
     user_input = gets.chomp 
-    
     position = input_to_index(user_input)
-    
     if valid_move?(position)  
       move(position, current_player)
     else 
       puts "invalid"
       turn
     end 
-    
-   puts display_board 
-    
+    display_board 
   end 
   
   def turn_count 
@@ -81,4 +75,73 @@ class TicTacToe
     end 
   end 
   
-end 
+  def won?
+    all_x = []
+    all_o = []
+    
+    @board.each_with_index do |token, index|
+      if token == "X"
+        all_x << index 
+      elsif token == "O"
+        all_o << index 
+      end 
+    end 
+    
+    WIN_COMBINATIONS.each do |combo| 
+      maybe_x = all_x & combo
+      maybe_o = all_o & combo
+      if maybe_x == combo 
+       return maybe_x
+      elsif maybe_o == combo 
+        return maybe_o
+      end 
+    end 
+    false 
+  end 
+  
+  def full? 
+    current_board = []
+    @board.each_with_index do |token, index|
+      if token == "X" || token == "O"
+        current_board << index 
+      end 
+    end 
+    current_board.length == 9
+  end 
+  
+  def draw?
+    full? && !won?
+  end 
+  
+  def over? 
+    full? && won? || full? && draw?
+  end 
+  
+  def winner 
+    if won? 
+      winning_combo = won? 
+      first_index = winning_combo[0]
+      return @board[first_index]
+    else 
+      nil 
+    end 
+  end 
+  
+  def play 
+    until over? || won? || draw?
+      turn 
+    end 
+      # see if someone won
+      if won? 
+    # and declare a winner 
+        puts "Congratulations #{winner}!"
+    # or see if it's a draw 
+      elsif draw? 
+        # and declare the draw 
+        puts "Cat's Game!"
+      end 
+    # otherwise ... 
+  end 
+  
+  
+end # I END THE CLASS 
