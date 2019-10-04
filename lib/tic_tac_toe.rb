@@ -69,16 +69,20 @@ class TicTacToe
       turn
     end
   end
-  
+
   def won?
-    exes = @board.map.with_index { |position, index| index if position == "X" }
-    xxx = WIN_COMBINATIONS.find { |combo| (combo - exes).empty? }
-    return xxx if xxx
-    owes = @board.map.with_index { |position, index| index if position == "O" }
-    ooo = WIN_COMBINATIONS.find { |combo| (combo - owes).empty? }
-    return ooo if ooo
-    false
+    WIN_COMBINATIONS.find { |combo| combo.map{|posit|@board[posit]}.join =~ /X{3}|O{3}/ } 
   end
+  
+  # def won?
+  #   exes = @board.map.with_index  { |position, index| index if position == "X" }
+  #   xxx = WIN_COMBINATIONS.find { |combo| (combo - exes).empty? }
+  #   return xxx if xxx
+  #   owes = @board.map.with_index { |position, index| index if position == "O" }
+  #   ooo = WIN_COMBINATIONS.find { |combo| (combo - owes).empty? }
+  #   return ooo if ooo
+  #   false
+  # end
   
   def full?
     true if turn_count == 9
